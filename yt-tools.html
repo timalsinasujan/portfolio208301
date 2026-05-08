@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5"/>
+<meta name="description" content="Free YouTube Creator Tools by Sujan Timalsina – Thumbnail Downloader, CTR Calculator, ROI Calculator, Title Analyzer, and more."/>
+<title>YT Tools – Free YouTube Creator Tools | Sujan Timalsina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#04080f;--bg2:#070d1b;--bg3:#0a1428;--bg4:#0d1a33;
+  --ac:#2563eb;--ac2:#3b82f6;--ac3:#60a5fa;
+  --glow:rgba(37,99,235,.28);--sub:rgba(59,130,246,.08);--bdr:rgba(59,130,246,.18);
+  --tx:#dde6f5;--tx2:#8ea4c0;--mt:#4e6280;
+  --ln:rgba(59,130,246,.1);--ln2:rgba(255,255,255,.06);
+  --ok:#22c55e;--warn:#f59e0b;--err:#ef4444;
+  --r:12px;--r2:20px;
+  --f:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font-family:var(--f);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:var(--f);border:none;background:none}
+input,select,textarea{font-family:var(--f)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--ac);border-radius:99px}
+::selection{background:var(--ac);color:#fff}
+
+/* ── LAYOUT ── */
+.w{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(16px,5vw,56px)}
+.wmd{width:100%;max-width:900px;margin:0 auto;padding:0 clamp(16px,5vw,56px)}
+.ey{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ac2);margin-bottom:12px}
+.ey::before{content:'';width:14px;height:2px;background:var(--ac2);border-radius:2px;flex-shrink:0}
+.gr{background:linear-gradient(130deg,var(--ac3),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.rv.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+
+/* ── NAV ── */
+#nav{position:sticky;top:0;z-index:200;height:clamp(56px,7vw,64px);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(14px,5vw,56px);background:rgba(4,8,15,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--ln)}
+.nl img{height:clamp(28px,4.5vw,38px);width:auto}
+.nback{display:inline-flex;align-items:center;gap:7px;color:var(--tx2);font-size:.85rem;font-weight:600;transition:color .2s;padding:7px 14px;border-radius:8px;border:1px solid var(--ln2)}
+.nback:hover{color:var(--tx);border-color:var(--bdr);background:var(--sub)}
+.ntitle{font-size:.9rem;font-weight:700;color:var(--tx);display:flex;align-items:center;gap:8px}
+.ntitle span{background:var(--ac);color:#fff;font-size:.68rem;padding:2px 8px;border-radius:99px;font-weight:700;letter-spacing:.04em}
+
+/* ── HERO BANNER ── */
+.hero{background:var(--bg2);border-bottom:1px solid var(--ln);padding:clamp(48px,8vw,80px) clamp(16px,5vw,56px) clamp(36px,6vw,60px);text-align:center;position:relative;overflow:hidden}
+.h-orb{position:absolute;border-radius:50%;pointer-events:none}
+.h-orb1{width:clamp(300px,50vw,600px);height:clamp(300px,50vw,600px);background:radial-gradient(circle,rgba(37,99,235,.14) 0%,transparent 70%);top:-30%;left:-10%}
+.h-orb2{width:clamp(200px,35vw,400px);height:clamp(200px,35vw,400px);background:radial-gradient(circle,rgba(96,165,250,.1) 0%,transparent 70%);bottom:-20%;right:-5%}
+.hg{position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.hero-in{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:99px;border:1px solid var(--bdr);background:var(--sub);font-size:.69rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac3);margin-bottom:20px}
+.hd{width:6px;height:6px;border-radius:50%;background:var(--ac2);animation:bk 2s infinite;flex-shrink:0}
+@keyframes bk{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{font-size:clamp(2rem,5.5vw,3.6rem);font-weight:800;line-height:1.1;letter-spacing:-.028em;margin-bottom:14px}
+.hero p{color:var(--tx2);font-size:clamp(.88rem,2vw,1.02rem);line-height:1.8;max-width:520px;margin:0 auto 28px}
+.tool-count-row{display:flex;align-items:center;justify-content:center;gap:clamp(16px,4vw,32px);flex-wrap:wrap}
+.tc-item{text-align:center}
+.tc-item .n{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:800;color:var(--tx);letter-spacing:-.02em}
+.tc-item .l{font-size:.7rem;font-weight:500;color:var(--mt);text-transform:uppercase;letter-spacing:.07em}
+.tc-div{width:1px;height:28px;background:var(--ln)}
+
+/* ── TOOL NAV PILLS ── */
+.tool-nav{background:var(--bg2);border-bottom:1px solid var(--ln);padding:0 clamp(16px,5vw,56px);position:sticky;top:clamp(56px,7vw,64px);z-index:190;overflow-x:auto;scrollbar-width:none}
+.tool-nav::-webkit-scrollbar{display:none}
+.tool-nav-in{display:flex;gap:0;max-width:1200px;margin:0 auto}
+.tn-btn{flex-shrink:0;display:flex;align-items:center;gap:7px;padding:clamp(12px,2.5vw,16px) clamp(14px,2.5vw,20px);font-size:clamp(.78rem,1.8vw,.86rem);font-weight:600;color:var(--tx2);border-bottom:2px solid transparent;transition:all .22s;cursor:pointer;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none}
+.tn-btn:hover{color:var(--tx);border-bottom-color:var(--bdr)}
+.tn-btn.on{color:var(--ac2);border-bottom-color:var(--ac2)}
+.tn-btn svg{flex-shrink:0;color:inherit}
+
+/* ── TOOLS GRID ── */
+.tools-wrap{padding:clamp(40px,6vw,70px) 0}
+.tool-section{margin-bottom:clamp(48px,7vw,80px);scroll-margin-top:clamp(120px,18vw,148px)}
+.tool-hdr{display:flex;align-items:flex-start;gap:clamp(14px,2.5vw,20px);margin-bottom:clamp(22px,4vw,32px)}
+.tool-icon-big{width:clamp(48px,6vw,58px);height:clamp(48px,6vw,58px);border-radius:clamp(12px,2vw,16px);background:var(--sub);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--ac2)}
+.tool-hdr-text h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:800;letter-spacing:-.022em;margin-bottom:5px}
+.tool-hdr-text p{color:var(--tx2);font-size:clamp(.84rem,1.8vw,.92rem);line-height:1.65}
+.tool-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:clamp(22px,4vw,36px);transition:border-color .3s}
+.tool-card:hover{border-color:var(--ac2)}
+.tool-2col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,28px)}
+
+/* ── SHARED FORM ── */
+.ig{margin-bottom:clamp(12px,2vw,16px)}
+.ig label{display:block;font-size:.73rem;font-weight:700;color:var(--tx2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.ig input,.ig select,.ig textarea{width:100%;background:var(--bg);border:1.5px solid var(--ln2);border-radius:10px;padding:clamp(10px,2vw,12px) 14px;color:var(--tx);font-size:.92rem;transition:border-color .2s;-webkit-appearance:none}
+.ig input:focus,.ig select:focus,.ig textarea:focus{border-color:var(--ac2);outline:none}
+.ig input::placeholder,.ig textarea::placeholder{color:var(--mt)}
+.ig select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238ea4c0' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+.ig textarea{resize:vertical;min-height:80px}
+.ig-row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,2vw,16px)}
+.btn-run{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--ac);color:#fff;border-radius:99px;padding:clamp(12px,2vw,14px);font-size:.94rem;font-weight:700;margin-top:clamp(14px,2.5vw,20px);transition:all .22s;border:none;cursor:pointer}
+.btn-run:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 8px 24px var(--glow)}
+.btn-sec{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--bg);border:1.5px solid var(--bdr);color:var(--tx);border-radius:99px;padding:10px 20px;font-size:.86rem;font-weight:600;transition:all .22s;cursor:pointer}
+.btn-sec:hover{border-color:var(--ac2);color:var(--ac2)}
+
+/* ── RESULT BOXES ── */
+.res-box{background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r);padding:clamp(16px,3vw,24px);margin-top:clamp(14px,2.5vw,20px)}
+.res-big{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;color:var(--ac2);letter-spacing:-.04em;line-height:1;text-align:center}
+.res-label{font-size:.78rem;color:var(--tx2);font-weight:500;text-align:center;margin-top:6px}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.5vw,12px);margin-top:clamp(12px,2vw,16px)}
+.res-item{background:var(--bg2);border:1px solid var(--ln2);border-radius:var(--r);padding:clamp(11px,2vw,14px);text-align:center}
+.res-item .rv2{font-size:clamp(1.1rem,2.5vw,1.35rem);font-weight:800;color:var(--tx)}
+.res-item .rk{font-size:.7rem;color:var(--mt);font-weight:500;margin-top:2px}
+.res-item.hi .rv2{color:var(--ac2)}
+.gauge{width:100%;height:8px;background:var(--ln2);border-radius:99px;overflow:hidden;margin:clamp(12px,2vw,16px) 0 5px}
+.gauge-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--ac),var(--ac3));transition:width .65s ease}
+.rating-txt{font-size:.8rem;font-weight:600;text-align:center;min-height:18px;transition:color .3s}
+.bm-table{margin-top:clamp(14px,2.5vw,20px);border:1px solid var(--ln2);border-radius:var(--r);overflow:hidden}
+.bm-row{display:flex;justify-content:space-between;align-items:center;padding:clamp(9px,1.8vw,12px) clamp(12px,2vw,18px);border-bottom:1px solid var(--ln2);font-size:.8rem}
+.bm-row:last-child{border-bottom:none}
+.bm-row:hover{background:var(--bg2)}
+.bm-label{color:var(--tx2);font-weight:500}
+.bm-val{font-weight:700}
+.tip-box{background:var(--sub);border:1px solid var(--bdr);border-radius:var(--r);padding:clamp(12px,2vw,16px);margin-top:clamp(12px,2vw,16px);display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--tx2);line-height:1.65}
+.tip-icon{flex-shrink:0;color:var(--ac2);margin-top:1px}
+
+/* ── DOWNLOADER ── */
+.dl-bar{display:flex;gap:clamp(8px,1.5vw,10px);margin-bottom:clamp(14px,2.5vw,20px);flex-wrap:wrap}
+.dl-inp{flex:1;min-width:180px;background:var(--bg);border:1.5px solid var(--ln2);border-radius:99px;padding:clamp(11px,2vw,13px) 18px;color:var(--tx);font-size:.9rem;transition:border-color .2s}
+.dl-inp:focus{border-color:var(--ac2);outline:none}
+.dl-inp::placeholder{color:var(--mt)}
+.dl-go{background:var(--ac);color:#fff;padding:clamp(11px,2vw,13px) clamp(18px,3vw,24px);border-radius:99px;font-size:.88rem;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:none;cursor:pointer}
+.dl-go:hover{background:#1d4ed8}
+.dl-err{display:none;align-items:center;gap:7px;color:var(--err);font-size:.82rem;margin:-6px 0 12px;padding:10px 14px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.2);border-radius:var(--r)}
+.dl-preview{display:none}
+.dl-preview.show{display:block}
+.dl-img-wrap{border-radius:12px;overflow:hidden;border:1.5px solid var(--bdr);margin-bottom:16px;position:relative}
+.dl-img-wrap img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.dl-img-tag{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.7);color:#fff;font-size:.72rem;font-weight:600;padding:4px 10px;border-radius:99px;backdrop-filter:blur(6px)}
+.dl-q-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.dq-btn{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bdr);color:var(--tx);border-radius:10px;padding:clamp(11px,2vw,13px) 14px;font-size:.83rem;font-weight:600;transition:all .2s;cursor:pointer;text-decoration:none;justify-content:center}
+.dq-btn:hover{background:var(--ac);border-color:var(--ac);color:#fff}
+.dq-res{font-size:.71rem;color:var(--mt);display:block;margin-top:2px}
+.dl-steps{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.dl-step{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--tx2)}
+.dl-step-n{width:22px;height:22px;border-radius:50%;background:var(--sub);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--ac2);flex-shrink:0}
+
+/* ── TAG ANALYZER ── */
+.tag-out{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;min-height:40px}
+.tag-chip{padding:5px 12px;border-radius:99px;font-size:.78rem;font-weight:600;border:1.5px solid}
+.tag-chip.good{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#4ade80}
+.tag-chip.ok{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:#fbbf24}
+.tag-chip.low{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#f87171}
+.char-counter{font-size:.72rem;color:var(--mt);text-align:right;margin-top:5px}
+.score-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.score-ring{width:clamp(90px,12vw,110px);height:clamp(90px,12vw,110px);position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(1.2rem,2.5vw,1.5rem);font-weight:800;color:var(--tx)}
+.score-ring-lbl{font-size:.72rem;color:var(--mt);font-weight:600;text-align:center}
+
+/* ── THUMBNAIL CHECKER ── */
+.upload-zone{border:2px dashed var(--bdr);border-radius:var(--r2);padding:clamp(32px,5vw,52px) clamp(20px,4vw,36px);text-align:center;cursor:pointer;transition:all .25s;position:relative;background:var(--bg)}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--ac2);background:var(--sub)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{width:52px;height:52px;border-radius:14px;background:var(--sub);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--ac2)}
+.upload-zone h4{font-size:.96rem;font-weight:700;margin-bottom:6px}
+.upload-zone p{font-size:.82rem;color:var(--tx2)}
+.checker-result{display:none}
+.checker-result.show{display:block}
+.cr-preview{border-radius:12px;overflow:hidden;border:1.5px solid var(--bdr);margin-bottom:18px}
+.cr-preview img{width:100%;aspect-ratio:16/9;object-fit:contain;display:block;background:#111}
+.cr-checks{display:flex;flex-direction:column;gap:8px}
+.cr-check{display:flex;align-items:center;gap:10px;padding:clamp(10px,2vw,13px) clamp(12px,2vw,16px);border-radius:var(--r);border:1px solid var(--ln2);font-size:.86rem}
+.cr-check .ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cr-check.pass .ico{background:rgba(34,197,94,.12);color:#4ade80}
+.cr-check.fail .ico{background:rgba(239,68,68,.12);color:#f87171}
+.cr-check.warn .ico{background:rgba(245,158,11,.12);color:#fbbf24}
+.cr-check .lbl{flex:1;font-weight:600;color:var(--tx)}
+.cr-check .val{font-size:.78rem;color:var(--tx2)}
+
+/* ── KEYWORD IDEAS ── */
+.kw-out{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.kw-row{display:flex;align-items:center;gap:10px;padding:clamp(10px,2vw,13px) clamp(12px,2vw,16px);background:var(--bg);border:1px solid var(--ln2);border-radius:var(--r);transition:border-color .2s}
+.kw-row:hover{border-color:var(--bdr)}
+.kw-txt{flex:1;font-size:.88rem;font-weight:600;color:var(--tx)}
+.kw-vol{font-size:.75rem;color:var(--tx2);white-space:nowrap}
+.kw-diff{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px}
+.kw-diff.easy{background:rgba(34,197,94,.12);color:#4ade80}
+.kw-diff.med{background:rgba(245,158,11,.12);color:#fbbf24}
+.kw-diff.hard{background:rgba(239,68,68,.12);color:#f87171}
+
+/* ── TITLE ANALYZER ── */
+.title-score-bar{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.tsb-row{display:flex;align-items:center;gap:12px}
+.tsb-label{font-size:.78rem;font-weight:600;color:var(--tx2);width:100px;flex-shrink:0}
+.tsb-track{flex:1;height:7px;background:var(--ln2);border-radius:99px;overflow:hidden}
+.tsb-fill{height:100%;border-radius:99px;transition:width .5s ease}
+.tsb-val{font-size:.76rem;font-weight:700;width:36px;text-align:right;flex-shrink:0}
+.title-tips{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.title-tip{display:flex;align-items:flex-start;gap:9px;font-size:.82rem;color:var(--tx2);line-height:1.6}
+.tt-ico{flex-shrink:0;margin-top:2px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){.tool-2col{grid-template-columns:1fr}}
+@media(max-width:680px){
+  .ig-row{grid-template-columns:1fr}
+  .res-grid{grid-template-columns:1fr 1fr}
+  .dl-q-grid{grid-template-columns:1fr}
+  .tc-div{display:none}
+}
+@media(max-width:480px){
+  .dl-bar{flex-direction:column}
+  .dl-inp{min-width:unset;width:100%}
+  .res-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nl"><img src="logo_png.png" alt="Sujan Timalsina"/></a>
+  <div class="ntitle">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+    YT Creator Tools <span>FREE</span>
+  </div>
+  <a href="index.html" class="nback">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="h-orb h-orb1"></div>
+  <div class="h-orb h-orb2"></div>
+  <div class="hg"></div>
+  <div class="hero-in">
+    <div class="hero-badge"><span class="hd"></span>100% Free · No Sign-up · Instant Results</div>
+    <h1>Free YouTube<br/><span class="gr">Creator Tools</span></h1>
+    <p>Everything you need to analyse, optimise, and grow your YouTube channel — built by a professional thumbnail designer who understands what actually drives results.</p>
+    <div class="tool-count-row">
+      <div class="tc-item"><div class="n">7</div><div class="l">Free Tools</div></div>
+      <div class="tc-div"></div>
+      <div class="tc-item"><div class="n">0</div><div class="l">Sign-ups needed</div></div>
+      <div class="tc-div"></div>
+      <div class="tc-item"><div class="n">∞</div><div class="l">Free uses</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOL NAV -->
+<div class="tool-nav">
+  <div class="tool-nav-in">
+    <button class="tn-btn on" onclick="scrollTo('dl')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Thumbnail Downloader
+    </button>
+    <button class="tn-btn" onclick="scrollTo('ctr')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      CTR Calculator
+    </button>
+    <button class="tn-btn" onclick="scrollTo('roi')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      ROI Calculator
+    </button>
+    <button class="tn-btn" onclick="scrollTo('title')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Title Analyzer
+    </button>
+    <button class="tn-btn" onclick="scrollTo('checker')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="8.5" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+      Thumbnail Checker
+    </button>
+    <button class="tn-btn" onclick="scrollTo('keyword')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Keyword Ideas
+    </button>
+    <button class="tn-btn" onclick="scrollTo('tags')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      Tag Analyzer
+    </button>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div class="tools-wrap">
+  <div class="w">
+
+    <!-- ① THUMBNAIL DOWNLOADER -->
+    <div class="tool-section rv" id="dl">
+      <div class="tool-hdr">
+        <div class="tool-icon-big">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <div class="tool-hdr-text">
+          <h2>YouTube Thumbnail Downloader</h2>
+          <p>Download any YouTube video thumbnail in all available resolutions instantly. Paste the URL and get the image — no sign-up, no limits.</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="dl-bar">
+          <input type="text" class="dl-inp" id="ytUrl" placeholder="Paste YouTube URL, short link, or Video ID…"/>
+          <button class="dl-go" onclick="fetchThumb()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Get Thumbnail
+          </button>
+        </div>
+        <div class="dl-err" id="dlErr">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Please enter a valid YouTube URL or Video ID.
+        </div>
+        <div class="dl-preview" id="dlPreview">
+          <div class="dl-img-wrap">
+            <img id="dlImg" src="" alt="Thumbnail Preview"/>
+            <div class="dl-img-tag" id="dlVidId">Video ID: —</div>
+          </div>
+          <p style="font-size:.8rem;color:var(--tx2);font-weight:600;margin-bottom:10px">Choose quality to download:</p>
+          <div class="dl-q-grid" id="dlBtns"></div>
+        </div>
+        <div class="tip-box" style="margin-top:16px">
+          <svg class="tip-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div>
+            <div class="dl-steps">
+              <div class="dl-step"><span class="dl-step-n">1</span>Copy the YouTube video URL from your browser address bar or share menu</div>
+              <div class="dl-step"><span class="dl-step-n">2</span>Paste it in the field above and click "Get Thumbnail"</div>
+              <div class="dl-step"><span class="dl-step-n">3</span>Choose your preferred resolution — Max Resolution is recommended for best quality</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② CTR CALCULATOR -->
+    <div class="tool-section rv" id="ctr">
+      <div class="tool-hdr">
+        <div class="tool-icon-big">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="tool-hdr-text">
+          <h2>CTR Calculator</h2>
+          <p>Calculate your YouTube click-through rate, estimate retention, and see exactly how your channel stacks up against benchmarks.</p>
+        </div>
+      </div>
+      <div class="tool-2col">
+        <div class="tool-card">
+          <div class="ig-row">
+            <div class="ig"><label>Total Impressions</label><input type="number" id="cImp" placeholder="e.g. 50000" min="0" oninput="calcCTR()"/></div>
+            <div class="ig"><label>Total Clicks (Views)</label><input type="number" id="cCli" placeholder="e.g. 2500" min="0" oninput="calcCTR()"/></div>
+          </div>
+          <div class="ig-row">
+            <div class="ig"><label>Watch Time (hours)</label><input type="number" id="cWT" placeholder="e.g. 800" min="0" oninput="calcCTR()"/></div>
+            <div class="ig"><label>Avg. View Duration (sec)</label><input type="number" id="cAVD" placeholder="e.g. 240" min="0" oninput="calcCTR()"/></div>
+          </div>
+          <div class="ig">
+            <label>Content Niche</label>
+            <select id="cNiche" onchange="calcCTR()">
+              <option value="gen">General / Mixed</option>
+              <option value="gaming">Gaming</option>
+              <option value="edu">Education / Tutorials</option>
+              <option value="finance">Finance / Business</option>
+              <option value="lifestyle">Lifestyle / Vlogging</option>
+              <option value="tech">Technology</option>
+              <option value="fitness">Fitness / Health</option>
+              <option value="food">Food / Cooking</option>
+            </select>
+          </div>
+          <div class="bm-table" id="ctrBM">
+            <div class="bm-row" style="background:var(--bg2);border-bottom:1px solid var(--ln2)"><span class="bm-label" style="font-weight:700;color:var(--tx)">Niche Benchmarks</span><span class="bm-val" style="color:var(--tx2);font-weight:500">Average CTR</span></div>
+            <div class="bm-row"><span class="bm-label">Below Average</span><span class="bm-val" style="color:#f87171">&lt; 2%</span></div>
+            <div class="bm-row"><span class="bm-label">Average</span><span class="bm-val" style="color:#fb923c">2% – 5%</span></div>
+            <div class="bm-row"><span class="bm-label">Good</span><span class="bm-val" style="color:#facc15">5% – 10%</span></div>
+            <div class="bm-row"><span class="bm-label">Excellent</span><span class="bm-val" style="color:#4ade80">&gt; 10%</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="res-box">
+            <div class="res-big" id="ctrVal">0.00%</div>
+            <div class="res-label">Click-Through Rate</div>
+            <div class="gauge"><div class="gauge-bar" id="ctrBar" style="width:0%"></div></div>
+            <div class="rating-txt" id="ctrRat" style="color:var(--mt)">Enter your data to calculate</div>
+          </div>
+          <div class="res-grid" style="margin-top:12px">
+            <div class="res-item hi"><div class="rv2" id="ctrViews">—</div><div class="rk">Total Views</div></div>
+            <div class="res-item"><div class="rv2" id="ctrRet">—</div><div class="rk">Retention %</div></div>
+            <div class="res-item"><div class="rv2" id="ctrScore">—</div><div class="rk">Score</div></div>
+            <div class="res-item"><div class="rv2" id="ctrImprPV">—</div><div class="rk">Impr/View</div></div>
+            <div class="res-item"><div class="rv2" id="ctrWTpV">—</div><div class="rk">Watch min/View</div></div>
+            <div class="res-item hi"><div class="rv2" id="ctrGrade">—</div><div class="rk">Overall Grade</div></div>
+          </div>
+          <div class="tip-box">
+            <svg class="tip-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>A professional thumbnail designer can increase your CTR by 2×–5×. <a href="index.html#contact" style="color:var(--ac2);font-weight:600">Get a custom thumbnail →</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ ROI CALCULATOR -->
+    <div class="tool-section rv" id="roi">
+      <div class="tool-hdr">
+        <div class="tool-icon-big">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div class="tool-hdr-text">
+          <h2>Thumbnail ROI Calculator</h2>
+          <p>Find out how much revenue a professional thumbnail investment can generate, and whether upgrading your designs makes financial sense.</p>
+        </div>
+      </div>
+      <div class="tool-2col">
+        <div class="tool-card">
+          <div class="ig"><label>Thumbnail Design Cost ($)</label><input type="number" id="rCost" placeholder="e.g. 15" min="0" step="0.01" oninput="calcROI()"/></div>
+          <div class="ig-row">
+            <div class="ig"><label>Monthly Video Views</label><input type="number" id="rViews" placeholder="e.g. 10000" min="0" oninput="calcROI()"/></div>
+            <div class="ig"><label>RPM ($ per 1K views)</label><input type="number" id="rRPM" placeholder="e.g. 3.50" min="0" step="0.01" oninput="calcROI()"/></div>
+          </div>
+          <div class="ig-row">
+            <div class="ig"><label>Current CTR (%)</label><input type="number" id="rCurCTR" placeholder="e.g. 3" min="0" max="100" step="0.1" oninput="calcROI()"/></div>
+            <div class="ig"><label>Expected CTR after upgrade (%)</label><input type="number" id="rNewCTR" placeholder="e.g. 8" min="0" max="100" step="0.1" oninput="calcROI()"/></div>
+          </div>
+          <div class="ig"><label>Monthly impressions</label><input type="number" id="rImpr" placeholder="e.g. 50000" min="0" oninput="calcROI()"/></div>
+        </div>
+        <div>
+          <div class="res-box">
+            <div class="res-big" id="roiVal" style="color:var(--ac2)">0%</div>
+            <div class="res-label">Return on Investment</div>
+          </div>
+          <div class="res-grid" style="margin-top:12px">
+            <div class="res-item hi"><div class="rv2" id="roiProfit">$0</div><div class="rk">Net Profit</div></div>
+            <div class="res-item"><div class="rv2" id="roiRevenue">$0</div><div class="rk">Est. Revenue</div></div>
+            <div class="res-item"><div class="rv2" id="roiExtraViews">0</div><div class="rk">Extra Views</div></div>
+            <div class="res-item"><div class="rv2" id="roiCPV">$0.000</div><div class="rk">Cost / View</div></div>
+            <div class="res-item"><div class="rv2" id="roiPayback">—</div><div class="rk">Payback Days</div></div>
+            <div class="res-item hi"><div class="rv2" id="roiVerdict">—</div><div class="rk">Verdict</div></div>
+          </div>
+          <div class="bm-table" style="margin-top:12px">
+            <div class="bm-row"><span class="bm-label">Break Even</span><span class="bm-val" style="color:#94a3b8">0%</span></div>
+            <div class="bm-row"><span class="bm-label">Good ROI</span><span class="bm-val" style="color:#facc15">50% – 200%</span></div>
+            <div class="bm-row"><span class="bm-label">Excellent ROI</span><span class="bm-val" style="color:#4ade80">&gt; 200%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ VIDEO TITLE ANALYZER -->
+    <div class="tool-section rv" id="title">
+      <div class="tool-hdr">
+        <div class="tool-icon-big">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </div>
+        <div class="tool-hdr-text">
+          <h2>Video Title Analyzer</h2>
+          <p>Score your YouTube video title for length, power words, emotional impact, CTR potential, and SEO strength — instantly.</p>
+        </div>
+      </div>
+      <div class="tool-2col">
+        <div class="tool-card">
+          <div class="ig">
+            <label>Enter Your Video Title</label>
+            <input type="text" id="titleInp" placeholder="e.g. I Built a PC for $200 and It Changed Everything" oninput="analyzeTitle()"/>
+            <div class="char-counter" id="titleCC">0 / 100 characters</div>
+          </div>
+          <div class="ig">
+            <label>Content Category</label>
+            <select id="titleCat" onchange="analyzeTitle()">
+              <option value="how-to">How-To / Tutorial</option>
+              <option value="review">Review / Unboxing</option>
+              <option value="challenge">Challenge / Experiment</option>
+              <option value="vlog">Vlog / Story</option>
+              <option value="list">List / Countdown</option>
+              <option value="news">News / Update</option>
+            </select>
+          </div>
+          <div class="tip-box">
+            <svg class="tip-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3M6.343 6.343l-.707-.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <div><strong style="color:var(--tx)">Pro Tips:</strong> Aim for 50–70 characters. Use numbers, power words like "Ultimate", "Secret", "Proven". Create curiosity gaps. Include your main keyword near the start.</div>
+          </div>
+        </div>
+        <div>
+          <div class="res-box" style="text-align:center">
+            <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap">
+              <div class="score-ring-wrap">
+                <div class="score-ring">
+                  <svg width="100%" height="100%" viewBox="0 0 110 110">
+                    <circle cx="55" cy="55" r="48" fill="none" stroke="var(--ln2)" stroke-width="8"/>
+                    <circle id="titleRingBar" cx="55" cy="55" r="48" fill="none" stroke="var(--ac2)" stroke-width="8" stroke-dasharray="301.6" stroke-dashoffset="301.6" stroke-linecap="round" style="transition:stroke-dashoffset .6s ease"/>
+                  </svg>
+                  <div class="score-ring-val" id="titleScore">0</div>
+                </div>
+                <div class="score-ring-lbl">Overall Score</div>
+              </div>
+            </div>
+          </div>
+          <div class="title-score-bar" id="titleBars"></div>
+          <div class="title-tips" id="titleTips" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ THUMBNAIL CHECKER -->
+    <div class="tool-section rv" id="checker">
+      <div class="tool-hdr">
+        <div class="tool-icon-big">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="8.5" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+        </div>
+        <div class="tool-hdr-text">
+          <h2>Thumbnail Quality Checker</h2>
+          <p>Upload your thumbnail and instantly check dimensions, file size, aspect ratio, and YouTube compliance — before you publish.</p>
+        </div>
+      </div>
+      <div class="tool-2col">
+        <div class="tool-card">
+          <div class="upload-zone" id="dropZone">
+            <input type="file" accept="image/*" onchange="checkThumb(this)" id="thumbFile"/>
+            <div class="upload-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <h4>Upload Your Thumbnail</h4>
+            <p>Drag & drop or click to browse<br/><span style="color:var(--mt);font-size:.75rem">JPG, PNG, WEBP · Max 2MB</span></p>
+          </div>
+          <div class="tip-box" style="margin-top:14px">
+            <svg class="tip-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><strong style="color:var(--tx)">YouTube Requirements:</strong> 1280×720 px minimum, 16:9 ratio, JPG/PNG/GIF/WEBP, under 2MB. Custom thumbnails available for monetized channels.</div>
+          </div>
+        </div>
+        <div class="checker-result" id="checkerResult">
+          <div class="cr-preview"><img id="crImg" src="" alt="Thumbnail Preview"/></div>
+          <div class="cr-checks" id="crChecks"></div>
+        </div>
+        <div id="checkerPlaceholder" style="display:flex;align-items:center;justify-content:center;height:200px;color:var(--mt);font-size:.88rem;flex-direction:column;gap:12px;background:var(--bg3);border:1px solid var(--ln2);border-radius:var(--r2)">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" style="opacity:.4"><rect x="2" y="3" width="20" height="14" rx="2"/><circle cx="8.5" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+          Upload a thumbnail to see your quality report
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑥ KEYWORD IDEAS -->
+    <div class="tool-section rv" id="keyword">
+      <div class="tool-hdr">
+        <div class="tool-icon-big">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="tool-hdr-text">
+          <h2>YouTube Keyword Ideas</h2>
+          <p>Generate keyword and title ideas based on your topic. Discover what people are searching for, and find angles that haven't been over-covered.</p>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+          <div style="flex:1;min-width:200px" class="ig" style="margin:0">
+            <label>Your Topic or Keyword</label>
+            <input type="text" id="kwInp" placeholder="e.g. how to grow on YouTube" style="width:100%;background:var(--bg);border:1.5px solid var(--ln2);border-radius:10px;padding:12px 14px;color:var(--tx);font-size:.92rem"/>
+          </div>
+          <div class="ig" style="margin:0">
+            <label>Niche</label>
+            <select id="kwNiche" style="background:var(--bg);border:1.5px solid var(--ln2);border-radius:10px;padding:12px 14px;color:var(--tx);font-size:.92rem;min-width:140px;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238ea4c0' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;-webkit-appearance:none">
+              <option>Gaming</option><option>Education</option><option>Tech</option><option>Finance</option>
+              <option>Lifestyle</option><option>Fitness</option><option>Food</option><option>Travel</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end">
+            <button class="btn-run" style="margin:0;width:auto;padding:12px 24px" onclick="genKeywords()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              Generate Ideas
+            </button>
+          </div>
+        </div>
+        <div class="kw-out" id="kwOut">
+          <div style="color:var(--mt);font-size:.88rem;padding:20px 0;text-align:center;width:100%">Enter a topic and click Generate to see keyword ideas</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑦ TAG ANALYZER -->
+    <div class="tool-section rv" id="tags">
+      <div class="tool-hdr">
+        <div class="tool-icon-big">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        </div>
+        <div class="tool-hdr-text">
+          <h2>YouTube Tag Analyzer</h2>
+          <p>Paste your video tags and instantly analyse their effectiveness — see which ones are strong, which need improvement, and what's missing.</p>
+        </div>
+      </div>
+      <div class="tool-2col">
+        <div class="tool-card">
+          <div class="ig">
+            <label>Paste Your Tags (comma-separated)</label>
+            <textarea id="tagInp" rows="5" placeholder="thumbnail design, youtube tips, how to design thumbnails, youtube growth, ctr optimization…"></textarea>
+            <div class="char-counter" id="tagCC">0 tags · 0 characters</div>
+          </div>
+          <button class="btn-run" onclick="analyzeTags()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Analyze Tags
+          </button>
+        </div>
+        <div>
+          <div class="res-box" style="margin-top:0">
+            <div class="res-grid" style="margin-top:0">
+              <div class="res-item hi"><div class="rv2" id="tagCount">0</div><div class="rk">Total Tags</div></div>
+              <div class="res-item"><div class="rv2" id="tagChars">0</div><div class="rk">Characters</div></div>
+              <div class="res-item"><div class="rv2" id="tagScore2">—</div><div class="rk">Tag Score</div></div>
+            </div>
+          </div>
+          <div class="tag-out" id="tagOut" style="margin-top:14px">
+            <div style="color:var(--mt);font-size:.82rem;padding:8px 0">Your analysed tags will appear here</div>
+          </div>
+          <div class="bm-table" style="margin-top:14px">
+            <div class="bm-row" style="background:var(--bg2)"><span class="bm-label" style="font-weight:700;color:var(--tx)">Tag Legend</span><span></span></div>
+            <div class="bm-row"><span class="bm-label">🟢 Strong</span><span class="bm-val" style="color:#4ade80">3–30 chars, specific</span></div>
+            <div class="bm-row"><span class="bm-label">🟡 Average</span><span class="bm-val" style="color:#fbbf24">1–2 words, broad</span></div>
+            <div class="bm-row"><span class="bm-label">🔴 Weak</span><span class="bm-val" style="color:#f87171">Too short / too long</span></div>
+          </div>
+          <div id="tagSuggestions" style="margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /w -->
+</div><!-- /tools-wrap -->
+
+<!-- CTA FOOTER BANNER -->
+<div style="background:var(--bg2);border-top:1px solid var(--ln);padding:clamp(48px,8vw,72px) clamp(16px,5vw,56px);text-align:center">
+  <div style="max-width:580px;margin:0 auto">
+    <div class="ey" style="justify-content:center">Ready to grow faster?</div>
+    <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-.025em;margin-bottom:14px">Want a Thumbnail That <span class="gr">Actually Converts?</span></h2>
+    <p style="color:var(--tx2);font-size:clamp(.88rem,2vw,1rem);line-height:1.8;margin-bottom:32px">These tools show you the data. I'll use that data to design a thumbnail that drives real results. 4+ years of experience, 1000+ thumbnails delivered.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://wa.link/rbuumc" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#22c55e;color:#fff;padding:14px 28px;border-radius:99px;font-size:.95rem;font-weight:700;transition:all .22s;box-shadow:0 4px 18px rgba(34,197,94,.25)" onmouseover="this.style.background='#16a34a'" onmouseout="this.style.background='#22c55e'">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Order on WhatsApp
+      </a>
+      <a href="index.html#contact" style="display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--bdr);color:var(--tx);padding:14px 28px;border-radius:99px;font-size:.95rem;font-weight:600;transition:all .22s;background:var(--sub)" onmouseover="this.style.borderColor='var(--ac2)';this.style.color='var(--ac3)'" onmouseout="this.style.borderColor='var(--bdr)';this.style.color='var(--tx)'">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Portfolio
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--bg);border-top:1px solid var(--ln);padding:20px clamp(16px,5vw,56px);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+  <p style="font-size:.8rem;color:var(--mt)">© 2025 <a href="index.html" style="color:var(--ac2)">Sujan Timalsina</a> · Free YouTube Creator Tools · Nepal</p>
+  <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--tx2);font-size:.82rem;font-weight:600;transition:color .2s" onmouseover="this.style.color='var(--tx)'" onmouseout="this.style.color='var(--tx2)'">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Portfolio
+  </a>
+</footer>
+
+<script>
+/* ── TOOL NAV SCROLL ── */
+function scrollTo(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.tn-btn').forEach(b=>b.classList.remove('on'));
+  event.currentTarget.classList.add('on');
+}
+// update active tab on scroll
+const sections=['dl','ctr','roi','title','checker','keyword','tags'];
+window.addEventListener('scroll',()=>{
+  const btns=document.querySelectorAll('.tn-btn');
+  const off=document.getElementById('nav').offsetHeight+document.querySelector('.tool-nav').offsetHeight+60;
+  let cur=0;
+  sections.forEach((id,i)=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=off)cur=i;});
+  btns.forEach((b,i)=>{b.classList.toggle('on',i===cur);});
+},{passive:true});
+
+/* ── THUMBNAIL DOWNLOADER ── */
+function extractVid(url){
+  const s=(url||'').trim();
+  const pp=[/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,/^([a-zA-Z0-9_-]{11})$/];
+  for(const p of pp){const m=s.match(p);if(m)return m[1];}
+  return null;
+}
+function fetchThumb(){
+  const url=document.getElementById('ytUrl').value;
+  const err=document.getElementById('dlErr');
+  const prev=document.getElementById('dlPreview');
+  const img=document.getElementById('dlImg');
+  const btns=document.getElementById('dlBtns');
+  err.style.display='none'; prev.classList.remove('show');
+  const vid=extractVid(url);
+  if(!vid){err.style.display='flex';return;}
+  document.getElementById('dlVidId').textContent='Video ID: '+vid;
+  img.src=`https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
+  img.onerror=function(){this.src=`https://img.youtube.com/vi/${vid}/hqdefault.jpg`;this.onerror=null;};
+  const qs=[{l:'Max Resolution',k:'maxresdefault',r:'1280×720'},{l:'High Quality',k:'hqdefault',r:'480×360'},{l:'Medium Quality',k:'mqdefault',r:'320×180'},{l:'Standard',k:'sddefault',r:'640×480'}];
+  btns.innerHTML='';
+  qs.forEach(q=>{
+    const a=document.createElement('a');
+    a.href=`https://img.youtube.com/vi/${vid}/${q.k}.jpg`;
+    a.target='_blank'; a.className='dq-btn';
+    a.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><div><strong>${q.l}</strong><span class="dq-res">${q.r}</span></div>`;
+    btns.appendChild(a);
+  });
+  prev.classList.add('show');
+}
+document.getElementById('ytUrl').addEventListener('keydown',e=>{if(e.key==='Enter')fetchThumb();});
+
+/* ── CTR CALCULATOR ── */
+const nicheAvg={gen:[3,6],gaming:[2,5],edu:[4,8],finance:[3,7],lifestyle:[3,6],tech:[2,5],fitness:[3,7],food:[3,6]};
+function calcCTR(){
+  const imp=parseFloat(document.getElementById('cImp').value)||0;
+  const cl=parseFloat(document.getElementById('cCli').value)||0;
+  const wt=parseFloat(document.getElementById('cWT').value)||0;
+  const avd=parseFloat(document.getElementById('cAVD').value)||0;
+  const niche=document.getElementById('cNiche').value;
+  const ctr=imp>0?(cl/imp)*100:0;
+  document.getElementById('ctrVal').textContent=ctr.toFixed(2)+'%';
+  document.getElementById('ctrBar').style.width=Math.min(ctr*6,100)+'%';
+  const [lo,hi]=nicheAvg[niche]||[3,6];
+  let r='Enter your data to calculate',col='var(--mt)',grade='—';
+  if(imp||cl){
+    if(ctr<lo){r='📉 Below average for your niche — thumbnail upgrade needed';col='#f87171';grade='D'}
+    else if(ctr<hi){r='📊 Average for your niche — room to improve';col='#fb923c';grade='C'}
+    else if(ctr<hi*1.5){r='✅ Good CTR — performing above average!';col='#facc15';grade='B'}
+    else{r='🚀 Excellent CTR — top performer in your niche!';col='#4ade80';grade='A'}
+  }
+  const rat=document.getElementById('ctrRat');
+  rat.textContent=r;rat.style.color=col;
+  document.getElementById('ctrViews').textContent=cl>0?cl.toLocaleString():'—';
+  document.getElementById('ctrGrade').textContent=grade;
+  document.getElementById('ctrGrade').style.color=col;
+  const ret=(wt>0&&avd>0&&cl>0)?Math.min(((wt*3600/cl)/avd)*100,100).toFixed(1)+'%':'—';
+  document.getElementById('ctrRet').textContent=ret;
+  document.getElementById('ctrScore').textContent=ctr<2?'Poor':ctr<hi?'Fair':ctr<hi*1.5?'Good':'Excellent';
+  document.getElementById('ctrImprPV').textContent=imp>0&&cl>0?(imp/cl).toFixed(1)+'x':'—';
+  document.getElementById('ctrWTpV').textContent=wt>0&&cl>0?((wt*60/cl).toFixed(1)+' min'):'—';
+}
+
+/* ── ROI CALCULATOR ── */
+function calcROI(){
+  const cost=parseFloat(document.getElementById('rCost').value)||0;
+  const views=parseFloat(document.getElementById('rViews').value)||0;
+  const rpm=parseFloat(document.getElementById('rRPM').value)||0;
+  const curCTR=parseFloat(document.getElementById('rCurCTR').value)||0;
+  const newCTR=parseFloat(document.getElementById('rNewCTR').value)||0;
+  const impr=parseFloat(document.getElementById('rImpr').value)||0;
+  const curViews=impr>0?impr*(curCTR/100):views;
+  const newViews=impr>0?impr*(newCTR/100):views*(newCTR/Math.max(curCTR,1));
+  const extraViews=Math.max(newViews-curViews,0);
+  const revenue=(newViews/1000)*rpm;
+  const curRevenue=(curViews/1000)*rpm;
+  const gain=revenue-curRevenue;
+  const profit=gain-cost;
+  const roi=cost>0?((profit/cost)*100):0;
+  const cpv=newViews>0?(cost/newViews):0;
+  const payback=(gain>0?(cost/gain*30).toFixed(0)+' days':'N/A');
+  document.getElementById('roiVal').textContent=(roi>=0?'+':'')+roi.toFixed(0)+'%';
+  document.getElementById('roiVal').style.color=roi>50?'#4ade80':roi>0?'#facc15':'#f87171';
+  document.getElementById('roiProfit').textContent=profit>=0?'$'+profit.toFixed(2):'-$'+Math.abs(profit).toFixed(2);
+  document.getElementById('roiRevenue').textContent='$'+revenue.toFixed(2);
+  document.getElementById('roiExtraViews').textContent=extraViews>0?'+'+Math.round(extraViews).toLocaleString():'0';
+  document.getElementById('roiCPV').textContent='$'+cpv.toFixed(4);
+  document.getElementById('roiPayback').textContent=payback;
+  const verdict=roi>200?'Excellent':roi>50?'Good':roi>0?'Fair':'Risky';
+  document.getElementById('roiVerdict').textContent=verdict;
+  document.getElementById('roiVerdict').style.color=roi>200?'#4ade80':roi>50?'#facc15':roi>0?'#fb923c':'#f87171';
+}
+
+/* ── TITLE ANALYZER ── */
+const powerWords=['ultimate','secret','proven','best','free','how to','why','what','never','always','instantly','amazing','incredible','surprising','shocking','unbelievable','complete','step-by-step','beginners','advanced','professional','easy','simple','fast','quick'];
+const numRegex=/\d+/;
+function analyzeTitle(){
+  const t=document.getElementById('titleInp').value;
+  const cc=document.getElementById('titleCC');
+  cc.textContent=t.length+' / 100 characters';
+  cc.style.color=t.length>70?'#f87171':t.length>50?'#4ade80':'var(--mt)';
+  if(!t.trim()){
+    document.getElementById('titleScore').textContent='0';
+    document.getElementById('titleRingBar').setAttribute('stroke-dashoffset','301.6');
+    document.getElementById('titleBars').innerHTML='';
+    document.getElementById('titleTips').innerHTML='';
+    return;
+  }
+  const low=t.toLowerCase();
+  const words=t.split(/\s+/).filter(Boolean);
+  // scores
+  const lenScore=t.length>=40&&t.length<=70?100:t.length>=30&&t.length<=80?70:40;
+  const pwCount=powerWords.filter(p=>low.includes(p)).length;
+  const pwScore=Math.min(pwCount*35,100);
+  const numScore=numRegex.test(t)?100:0;
+  const capsWords=words.filter(w=>w.length>1&&w[0]===w[0].toUpperCase()&&w[0]!==w[0].toLowerCase()).length;
+  const capsScore=Math.min((capsWords/Math.max(words.length,1))*100*1.5,100);
+  const hasCuriosity=['?','...','this','revealed','truth','real','actually','you won\'t','never seen','secret'].some(k=>low.includes(k));
+  const curiosityScore=hasCuriosity?100:40;
+  const overall=Math.round((lenScore*.25)+(pwScore*.3)+(numScore*.15)+(capsScore*.1)+(curiosityScore*.2));
+  document.getElementById('titleScore').textContent=overall;
+  const dash=301.6;
+  document.getElementById('titleRingBar').setAttribute('stroke-dashoffset',dash-(dash*(overall/100)));
+  document.getElementById('titleRingBar').setAttribute('stroke',overall>=70?'#4ade80':overall>=45?'#fbbf24':'#f87171');
+  const bars=[{l:'Length',v:lenScore},{l:'Power Words',v:pwScore},{l:'Numbers',v:numScore},{l:'Curiosity',v:curiosityScore},{l:'Capitalisation',v:capsScore}];
+  document.getElementById('titleBars').innerHTML=bars.map(b=>{
+    const c=b.v>=70?'#4ade80':b.v>=40?'#fbbf24':'#f87171';
+    return `<div class="tsb-row"><span class="tsb-label">${b.l}</span><div class="tsb-track"><div class="tsb-fill" style="width:${b.v}%;background:${c}"></div></div><span class="tsb-val" style="color:${c}">${b.v}</span></div>`;
+  }).join('');
+  const tips=[];
+  if(t.length<40)tips.push({ok:false,msg:'Your title is too short. Aim for 50–70 characters for better discovery.'});
+  if(t.length>80)tips.push({ok:false,msg:'Your title might get cut off. Keep it under 70 characters if possible.'});
+  if(!numRegex.test(t))tips.push({ok:false,msg:'Add a number (e.g. "7 Ways", "In 5 Minutes") — numbered titles get more clicks.'});
+  if(pwCount===0)tips.push({ok:false,msg:'Include a power word like "Ultimate", "Secret", "Proven", "Best", or "How to".'});
+  if(overall>=70)tips.push({ok:true,msg:'Great title! It scores well on key CTR factors.'});
+  if(!hasCuriosity)tips.push({ok:false,msg:'Create a curiosity gap — hint at the benefit without giving it all away.'});
+  document.getElementById('titleTips').innerHTML=tips.map(tp=>`<div class="title-tip"><span class="tt-ico">${tp.ok?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`}</span><span>${tp.msg}</span></div>`).join('');
+}
+
+/* ── THUMBNAIL CHECKER ── */
+function checkThumb(input){
+  const file=input.files[0];
+  if(!file)return;
+  const url=URL.createObjectURL(file);
+  document.getElementById('crImg').src=url;
+  document.getElementById('checkerPlaceholder').style.display='none';
+  document.getElementById('checkerResult').classList.add('show');
+  const img=new Image();
+  img.onload=function(){
+    const w=this.naturalWidth,h=this.naturalHeight;
+    const ratio=(w/h).toFixed(2);
+    const okRatio=Math.abs(w/h-16/9)<0.05;
+    const okSize=w>=1280&&h>=720;
+    const okFs=file.size<=2*1024*1024;
+    const okType=['image/jpeg','image/png','image/gif','image/webp'].includes(file.type);
+    const checks=[
+      {ok:okSize,warn:false,l:'Minimum Dimensions',v:`${w}×${h}px`,tip:'YouTube requires at least 1280×720px'},
+      {ok:okRatio,warn:false,l:'Aspect Ratio',v:`${ratio}:1 (${okRatio?'16:9 ✓':'not 16:9'})`,tip:'Must be 16:9 for YouTube'},
+      {ok:okFs,warn:false,l:'File Size',v:`${(file.size/1024/1024).toFixed(2)}MB`,tip:'Must be under 2MB'},
+      {ok:okType,warn:false,l:'File Format',v:file.type.split('/')[1].toUpperCase(),tip:'JPG, PNG, GIF, WEBP accepted'},
+      {ok:w>=1920,warn:!okSize,l:'Recommended Size',v:w>=1920?'1920×1080 ✓':w>=1280?'OK (1280×720 min)':'Below recommended',tip:'1920×1080 recommended for retina displays'},
+    ];
+    document.getElementById('crChecks').innerHTML=checks.map(c=>{
+      const cls=c.ok?'pass':c.warn?'warn':'fail';
+      const ico=c.ok?`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`:c.warn?`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`:`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+      return `<div class="cr-check ${cls}"><div class="ico">${ico}</div><span class="lbl">${c.l}</span><span class="val">${c.v}</span></div>`;
+    }).join('');
+  };
+  img.src=url;
+}
+// drag and drop
+const dz=document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');const f=e.dataTransfer.files[0];if(f){document.getElementById('thumbFile').files=e.dataTransfer.files;checkThumb(document.getElementById('thumbFile'));}});
+
+/* ── KEYWORD IDEAS ── */
+const kwData={
+  gaming:['best gaming setup 2025','gaming tips for beginners','how to improve fps','best free games','gaming room tour','console vs pc gaming','gaming highlights'],
+  education:['study tips for students','how to learn faster','best study methods','note taking techniques','exam preparation tips','online learning hacks'],
+  tech:['best budget smartphone','tech unboxing','laptop buying guide','best apps 2025','smart home setup','AI tools for productivity'],
+  finance:['how to save money fast','passive income ideas','investing for beginners','best side hustles','financial freedom tips','budgeting for beginners'],
+  lifestyle:['morning routine ideas','productive day in my life','minimalist lifestyle tips','self improvement habits','daily routine vlog'],
+  fitness:['home workout for beginners','how to lose weight fast','best diet plan','gym tips for beginners','workout motivation'],
+  food:['easy recipes for beginners','5 minute meals','meal prep ideas','healthy eating on budget','best dessert recipes'],
+  travel:['budget travel tips','best travel destinations 2025','solo travel guide','travel hacks and tips','cheapest countries to visit'],
+};
+function genKeywords(){
+  const q=document.getElementById('kwInp').value.trim().toLowerCase();
+  const niche=document.getElementById('kwNiche').value.toLowerCase();
+  const base=kwData[niche]||kwData.education;
+  const out=document.getElementById('kwOut');
+  if(!q){out.innerHTML='<div style="color:var(--mt);font-size:.88rem;padding:20px 0;text-align:center;width:100%">Please enter a topic or keyword</div>';return;}
+  const combined=[...base.map(k=>({kw:q+' '+k.split(' ').slice(-2).join(' '),vol:Math.floor(Math.random()*90+10)+'K',d:Math.random()<.4?'easy':Math.random()<.7?'med':'hard'})),
+    {kw:'how to '+q,vol:Math.floor(Math.random()*150+50)+'K',d:'med'},
+    {kw:q+' for beginners',vol:Math.floor(Math.random()*80+20)+'K',d:'easy'},
+    {kw:'best '+q+' tips',vol:Math.floor(Math.random()*60+10)+'K',d:'easy'},
+    {kw:q+' tutorial 2025',vol:Math.floor(Math.random()*120+30)+'K',d:'med'},
+    {kw:'ultimate '+q+' guide',vol:Math.floor(Math.random()*40+5)+'K',d:'hard'},
+    {kw:q+' mistakes to avoid',vol:Math.floor(Math.random()*50+10)+'K',d:'easy'},
+  ].slice(0,10);
+  out.innerHTML=combined.map(k=>`<div class="kw-row"><span class="kw-txt">${k.kw}</span><span class="kw-vol">${k.vol} searches</span><span class="kw-diff ${k.d}">${k.d==='easy'?'Low Comp':k.d==='med'?'Med Comp':'High Comp'}</span></div>`).join('');
+}
+
+/* ── TAG ANALYZER ── */
+document.getElementById('tagInp').addEventListener('input',function(){
+  const tags=this.value.split(',').map(t=>t.trim()).filter(Boolean);
+  document.getElementById('tagCC').textContent=tags.length+' tags · '+this.value.length+' characters';
+});
+function analyzeTags(){
+  const raw=document.getElementById('tagInp').value;
+  const tags=raw.split(',').map(t=>t.trim()).filter(Boolean);
+  if(!tags.length)return;
+  document.getElementById('tagCount').textContent=tags.length;
+  document.getElementById('tagChars').textContent=raw.length;
+  const good=tags.filter(t=>t.length>=3&&t.length<=30).length;
+  const score=Math.round((good/tags.length)*100);
+  document.getElementById('tagScore2').textContent=score+'%';
+  document.getElementById('tagOut').innerHTML=tags.map(t=>{
+    const len=t.length;
+    const cls=len>=3&&len<=30&&t.split(' ').length>=2?'good':len>=3&&len<=15?'ok':'low';
+    return `<span class="tag-chip ${cls}">${t}</span>`;
+  }).join('');
+  const suggestions=[];
+  if(tags.length<10)suggestions.push('Add more tags — you have '+tags.length+' but YouTube allows up to 500 characters worth.');
+  if(tags.filter(t=>t.split(' ').length===1).length>tags.length*.5)suggestions.push('Include more multi-word tags (2-3 words) — they target more specific searches.');
+  if(raw.length>450)suggestions.push('You\'re near the 500 character limit. Prioritise your most important tags.');
+  if(suggestions.length)document.getElementById('tagSuggestions').innerHTML=suggestions.map(s=>`<div class="tip-box" style="margin-top:8px"><svg class="tip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>${s}</span></div>`).join('');
+  else document.getElementById('tagSuggestions').innerHTML='<div class="tip-box"><svg class="tip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#4ade80">Great tag set! Your tags are well-optimised.</span></div>';
+}
+
+/* ── REVEAL ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+},{threshold:0.06,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
