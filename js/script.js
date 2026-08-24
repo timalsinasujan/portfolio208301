@@ -22,32 +22,32 @@ function bSlider(id,imgs){
     t.appendChild(c);
   });
 }
-const th=Array.from({length:18},(_,i)=>`thumbnail${i+1}.jpg`);
+const th=Array.from({length:18},(_,i)=>`images/thumbnails/thumbnail${i+1}.jpg`);
 bSlider('tr1',th.slice(0,10));
 bSlider('tr2',th.slice(10,20));
 
 /* 20 CLIENTS – logo image, name + subs, 2 rows sliding */
 const clients=[
-  {img:'client1.jpg', n:'Tonde Gamer',  s:'19M+ subscribers'},
-  {img:'client2.jpg', n:'Laka Gaming',    s:'11.5M+ subscribers'},
-  {img:'client3.jpg', n:'ABHISHEK YT',   s:'6.5M+ subscribers'},
-  {img:'client4.jpg', n:'chunu vlogs', s:'130K+ subscribers'},
-  {img:'client5.jpg', n:'Zeroth YT',        s:'300K subscribers'},
-  {img:'client6.jpg', n:'Motey FF',s:'335K+ subscribers'},
-  {img:'client7.jpg', n:'A4 Gamer',   s:'135K+ subscribers'},
-  {img:'client8.jpg', n:'TGR Sabinz',     s:'220K+ subscribers'},
-  {img:'client9.jpg', n:'AWAARA 786',        s:'40K+ subscribers'},
-  {img:'client10.jpg',n:'Iam Binayak',        s:'1.2M+ subscribers'},
-  {img:'client11.jpg',n:'KUSUM YT',      s:'935K+ subscribers'},
-  {img:'client12.jpg',n:'Tonde Brothers Live', s:'220K+ subscribers'},
-  {img:'client13.jpg',n:'Laka Plays',     s:'2.07M+ subscribers'},
-  {img:'client14.jpg',n:'KAKA GAMER',     s:'25K+ subscribers'},
-  {img:'client15.jpg',n:'SMOOKER YT',         s:'250K+ subscribers'},
-  {img:'client16.jpg',n:'MNG KING',       s:'605K+ subscribers'},
-  {img:'client17.jpg',n:'A Foot Gamer',       s:'29.5K+ subscribers'},
-  {img:'client18.jpg',n:'BRIGHTER NEPAL',        s:'26.5K+ subscribers'},
-  {img:'client19.jpg',n:'Lobster Capital',      s:'6.5K+ subscribers'},
-  {img:'client20.jpg',n:'OSR Digital',        s:'10.5M+ subscribers'},
+  {img:'images/clients/client1.jpg', n:'Tonde Gamer',  s:'19M+ subscribers'},
+  {img:'images/clients/client2.jpg', n:'Laka Gaming',    s:'11.5M+ subscribers'},
+  {img:'images/clients/client3.jpg', n:'ABHISHEK YT',   s:'6.5M+ subscribers'},
+  {img:'images/clients/client4.jpg', n:'chunu vlogs', s:'130K+ subscribers'},
+  {img:'images/clients/client5.jpg', n:'Zeroth YT',        s:'300K subscribers'},
+  {img:'images/clients/client6.jpg', n:'Motey FF',s:'335K+ subscribers'},
+  {img:'images/clients/client7.jpg', n:'A4 Gamer',   s:'135K+ subscribers'},
+  {img:'images/clients/client8.jpg', n:'TGR Sabinz',     s:'220K+ subscribers'},
+  {img:'images/clients/client9.jpg', n:'AWAARA 786',        s:'40K+ subscribers'},
+  {img:'images/clients/client10.jpg',n:'Iam Binayak',        s:'1.2M+ subscribers'},
+  {img:'images/clients/client11.jpg',n:'KUSUM YT',      s:'935K+ subscribers'},
+  {img:'images/clients/client12.jpg',n:'Tonde Brothers Live', s:'220K+ subscribers'},
+  {img:'images/clients/client13.jpg',n:'Laka Plays',     s:'2.07M+ subscribers'},
+  {img:'images/clients/client14.jpg',n:'KAKA GAMER',     s:'25K+ subscribers'},
+  {img:'images/clients/client15.jpg',n:'SMOOKER YT',         s:'250K+ subscribers'},
+  {img:'images/clients/client16.jpg',n:'MNG KING',       s:'605K+ subscribers'},
+  {img:'images/clients/client17.jpg',n:'A Foot Gamer',       s:'29.5K+ subscribers'},
+  {img:'images/clients/client18.jpg',n:'BRIGHTER NEPAL',        s:'26.5K+ subscribers'},
+  {img:'images/clients/client19.jpg',n:'Lobster Capital',      s:'6.5K+ subscribers'},
+  {img:'images/clients/client20.jpg',n:'OSR Digital',        s:'10.5M+ subscribers'},
 ];
 function bClientRow(id,items){
   const t=document.getElementById(id);
