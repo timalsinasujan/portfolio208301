@@ -18,13 +18,78 @@ function bSlider(id,imgs){
   const t=document.getElementById(id);
   [...imgs,...imgs].forEach((src,i)=>{
     const c=document.createElement('div');c.className='tc';
-    c.innerHTML=`<img src="${src}" alt="Thumbnail ${(i%imgs.length)+1}" loading="lazy"/><div class="tco"><span>Thumbnail Design</span></div>`;
+    c.innerHTML=`<img src="${src}" alt="Thumbnail ${(i%imgs.length)+1}" loading="lazy" draggable="false"/>`;
     t.appendChild(c);
   });
 }
 const th=Array.from({length:18},(_,i)=>`images/thumbnails/thumbnail${i+1}.jpg`);
-bSlider('tr1',th.slice(0,10));
-bSlider('tr2',th.slice(10,20));
+bSlider('tr1',th.slice(0,6));
+bSlider('tr2',th.slice(6,12));
+bSlider('tr3',th.slice(12,18));
+
+/* DRAG TO SLIDE */
+function enableDragSlide(slider){
+  // Do not apply automatic sliding on small screens (mobile)
+  if (window.innerWidth <= 480) {
+    // Ensure overflow is visible and allow native scrolling if needed
+    slider.style.overflowX = 'auto';
+    return; // Skip drag & auto‑scroll logic for mobile
+  }
+
+  let isDown = false, startX = 0, scrollLeft = 0;
+  let hoverPause = false;
+
+  // Manual drag handling (left mouse button only)
+  slider.addEventListener('mousedown', e => {
+    if (e.button !== 0) return; // ignore other buttons
+    isDown = true;
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+    slider.classList.add('grabbing');
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDown) return;
+    isDown = false;
+    slider.classList.remove('grabbing');
+  });
+
+  slider.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    slider.scrollLeft = scrollLeft - walk;
+  });
+
+  slider.addEventListener('mouseleave', () => {
+    if (isDown) isDown = false;
+    slider.classList.remove('grabbing');
+  });
+
+  // Pause automatic scroll when hovering over any thumbnail
+  slider.querySelectorAll('.tc').forEach(tc => {
+    tc.addEventListener('mouseenter', () => { hoverPause = true; });
+    tc.addEventListener('mouseleave', () => { hoverPause = false; });
+  });
+
+  // Continuous automatic scrolling for desktop
+  const speed = 0.5; // pixels per frame
+  function autoScroll(){
+    if (!isDown && !hoverPause) {
+      slider.scrollLeft += speed;
+      // Loop back when halfway through duplicated content
+      if (slider.scrollLeft >= slider.scrollWidth / 2) {
+        slider.scrollLeft = 0;
+      }
+    }
+    requestAnimationFrame(autoScroll);
+  }
+  autoScroll();
+}
+
+document.querySelectorAll('.str').forEach(enableDragSlide);
+document.querySelectorAll('.str').forEach(enableDragSlide);
 
 /* 20 CLIENTS – logo image, name + subs, 2 rows sliding */
 const clients=[
